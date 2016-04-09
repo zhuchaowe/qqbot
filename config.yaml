@@ -1,8 +1,8 @@
 # rename this file to config.yaml before start
 
 # qqbot account, not needed anymore for qrcode authentication
-account:  2769546520
-password: "123"
+account:  1914430989
+password: "zhu305750624"
 
 # server to view verification code, not required for mac
 port: 3100
@@ -16,6 +16,7 @@ plugins:
     - help
     - debug
     - apiserver
+    - moxiaoxiao
 
 # apiserver plugin configration
 api_port:  3200
