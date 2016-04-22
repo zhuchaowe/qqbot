@@ -41,9 +41,17 @@ message:{ content: '还好',
                 var firstItem = json.data.list[0];
                 var timestamp = new Date().getTime();
                 var timeStep = timestamp - firstItem.time;
-                if (timeStep < 5*60*1000) {
-                    qqbot.get_group_gid(qqId, function(err, gid) {
-                        return qqbot.send_message_to_group(gid, firstItem.content, function(ret, e) {});
+
+                if (timeStep < 7*60*1000) {
+                    qqbot.get_user_uin(qqId, function(err, gid) {
+                        return qqbot.send_message(gid, firstItem.content, function(ret, e) {
+                            var resp_ret = { result: ret };
+                            if (e) {
+                              resp_ret.err = 1;
+                              resp_ret.msg = "" + e;
+                            }
+                            log.debug(resp_ret);
+                        });
                     });
                 }
             });
@@ -52,7 +60,7 @@ message:{ content: '还好',
 
     var task;
     exports.init = function(qqbot) {
-        task = getTask("*/5 * * * *", "303227871", qqbot);
+        task = getTask("*/5 * * * *", "747979327", qqbot);
         return task.start();
     };
     exports.stop = function(qqbot) {
