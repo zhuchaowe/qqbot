@@ -38,12 +38,12 @@ message:{ content: '还好',
                 json: true
             })
             .then(function(data) {
-                if (data.code == 100000) {
+                if (data.code === 100000) {
                     return {
                         text: data.text,
                         type: -1,
                     };
-                } else if (data.code == 200000) {
+                } else if (data.code === 200000) {
                     return {
                         text: data.text,
                         linkList: [{
@@ -52,7 +52,7 @@ message:{ content: '还好',
                         }],
                         type: -1,
                     };
-                } else if (data.code == 302000) {
+                } else if (data.code === 302000) {
                     return {
                         text: data.text,
                         linkList: data.list.map(function(item) {
@@ -60,11 +60,11 @@ message:{ content: '还好',
                                 title: "【" + item.source + "】" + item.article,
                                 image: item.icon,
                                 url: item.detailurl
-                            }
+                            };
                         }),
                         type: -1
                     };
-                } else if (data.code == 305000) {
+                } else if (data.code === 305000) {
                     return {
                         text: data.text,
                         linkList: data.list.map(function(item) {
@@ -73,11 +73,11 @@ message:{ content: '还好',
                                 desc: item.start + "->" + item.terminal + "(" + item.starttime + "-" + item.endtime + ")",
                                 image: item.icon,
                                 url: item.detailurl
-                            }
+                            };
                         }),
                         type: -1
                     };
-                } else if (data.code == 306000) {
+                } else if (data.code === 306000) {
                     return {
                         text: data.text,
                         linkList: data.list.map(function(item) {
@@ -86,11 +86,11 @@ message:{ content: '还好',
                                 desc: "(" + item.starttime + "-" + item.endtime + ")",
                                 image: item.icon,
                                 url: item.detailurl
-                            }
+                            };
                         }),
                         type: -1
                     };
-                } else if (data.code == 308000) {
+                } else if (data.code === 308000) {
                     return {
                         text: data.text,
                         linkList: data.list.map(function(item) {
@@ -99,7 +99,7 @@ message:{ content: '还好',
                                 desc: item.info,
                                 image: item.icon,
                                 url: item.detailurl
-                            }
+                            };
                         }),
                         type: -1
                     };
@@ -109,10 +109,19 @@ message:{ content: '还好',
             });
     };
     module.exports = function(content, send, robot, message) {
-        if (content.match(/^墨小小$/i)) {
-            send("你好我是墨小小");
-        }else if (ret = content.match(/墨小小/i)) {
-            content = content.replace("墨小小","");
+        if (message.type == "group_message") {
+            if (content.match(/^墨小小$/i)) {
+                send("你好我是墨小小");
+            } else if (ret = content.match(/墨小小/i)) {
+                content = content.replace("墨小小", "");
+                requestTuling(content, message.from_user.account)
+                    .then(function(reply) {
+                        send(reply.text);
+                    }).catch(function(error) {
+                        log.debug('[moxiaoxiao]', error.message);
+                    });
+            }
+        } else if (message.type == "message") {
             requestTuling(content, message.from_user.account)
                 .then(function(reply) {
                     send(reply.text);

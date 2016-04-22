@@ -17,6 +17,7 @@ plugins:
     - debug
     - apiserver
     - moxiaoxiao
+    - koudai
 
 # apiserver plugin configration
 api_port:  3200
